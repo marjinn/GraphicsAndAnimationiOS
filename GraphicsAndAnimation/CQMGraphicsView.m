@@ -39,17 +39,25 @@
     //drawline
     //drawLine();
     
-    [self drawRooftopAtTopPointOf:CGPointMake(160.0f, 40.0f)
-                    textToDisplay:@"Miter"
-                         lineJoin:(CGLineJoin)kCGLineJoinMiter];
+//    [self drawRooftopAtTopPointOf:CGPointMake(160.0f, 40.0f)
+//                    textToDisplay:@"Miter"
+//                         lineJoin:(CGLineJoin)kCGLineJoinMiter];
+//    
+//    [self drawRooftopAtTopPointOf:CGPointMake(160.0f, 180.0f)
+//                    textToDisplay:@"Bevel"
+//                         lineJoin:(CGLineJoin)kCGLineJoinBevel];
+//    
+//    [self drawRooftopAtTopPointOf:CGPointMake(160.0f, 320.0f)
+//                    textToDisplay:@"Round"
+//                         lineJoin:(CGLineJoin)kCGLineJoinRound];
     
-    [self drawRooftopAtTopPointOf:CGPointMake(160.0f, 180.0f)
-                    textToDisplay:@"Bevel"
-                         lineJoin:(CGLineJoin)kCGLineJoinBevel];
     
-    [self drawRooftopAtTopPointOf:CGPointMake(160.0f, 320.0f)
-                    textToDisplay:@"Round"
-                         lineJoin:(CGLineJoin)kCGLineJoinRound];
+    
+    //pathExample();
+    
+    drawRectangles();
+    
+    
 }
 
 
@@ -210,7 +218,7 @@ void drawLine (void)
     //endpoint add line
     CGContextAddLineToPoint(currentContext, paramToPoint.x, paramToPoint.y);
     
-    //extend - as the "brush" stops at the nend point
+    //extend - as the "brush" stops at the end point
     CGContextAddLineToPoint
     (currentContext, paramToPoint.x + 140.0f, paramToPoint.y + 100.0f);
     
@@ -230,5 +238,173 @@ void drawLine (void)
     
 }
 
+CGRect getBoundsWithOrientation (bool needsRrientationSupport)
+{
+    //get the screen bounds
+    CGRect screenBounds =   CGRectZero;
+    
+    if (needsRrientationSupport)
+    {
+        //If you need orientation Support
+        if ([[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] isKindOfClass:[UINavigationController class]])
+        {
+            screenBounds    =
+            [[[(UINavigationController*)[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] topViewController] view ]bounds];
+            
+        }
+        else
+        {
+            screenBounds    =
+            [[(UINavigationController*)[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] view ]bounds];
+        }
+
+    }
+    else
+    {
+        
+        screenBounds    =   [[UIScreen mainScreen] bounds];
+    }
+    
+
+    return screenBounds;
+}
+
+void pathExample (void)
+{
+    /*
+     *  TASK : - Draw an 'X' across the screen
+     */
+    
+    /*
+     
+     (minX,minY)-------(midX,minY)--------(maxX,minY)
+     |                                              |
+     |                                              |
+     |                                              |
+     |(minX,midY)      (midX,midY)       (maxX,midY)|
+     |                                              |
+     |                                              |
+     |                                              |
+     (minX,maxY)-------(midX,maxY)--------(maxX,maxY)
+     */
+    
+    
+    //create the path
+    CGMutablePathRef mutablePath    =   NULL;
+    mutablePath =   CGPathCreateMutable();
+    
+    //get the screen bounds
+    CGRect screenBounds =   CGRectZero;
+    //screenBounds    =   [[UIScreen mainScreen] bounds];
+    screenBounds    =   getBoundsWithOrientation(true);
+    //topLeft
+    CGPoint topLeft =    CGPointZero;
+    topLeft.x   =   CGRectGetMinX(screenBounds);
+    topLeft.y   =   CGRectGetMinY(screenBounds);
+    
+    //bottomRight
+    CGPoint bottomRight =    CGPointZero;
+    bottomRight.x   =   CGRectGetWidth(screenBounds);
+    bottomRight.y   =   CGRectGetHeight(screenBounds);
+    
+    //start from topleft
+    CGPathMoveToPoint
+    (mutablePath, NULL, topLeft.x, topLeft.y);
+    
+    //draw a line from top left to bottom right
+    CGPathAddLineToPoint
+    (mutablePath, NULL, bottomRight.x, bottomRight.y);
+    
+    //topright
+    CGPoint topRight =    CGPointZero;
+    topRight.x   =   CGRectGetMaxX(screenBounds);
+    topRight.y   =   CGRectGetMinY(screenBounds);
+    
+    //start another line from top-right
+    CGPathMoveToPoint
+    (mutablePath, NULL, topRight.x, topRight.y);
+    
+    //bottomLeft
+    CGPoint bottomLeft =    CGPointZero;
+    bottomLeft.x   =   CGRectGetMinX(screenBounds);
+    bottomLeft.y   =   CGRectGetMaxY(screenBounds);
+    
+    //draw a line from top-right to bottom-left
+    CGPathAddLineToPoint
+    (mutablePath, NULL, bottomLeft.x, bottomLeft.y);
+    
+    //get the context that the path has to be drawn on
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    //add the path to the context ,so that we can draw it later
+    CGContextAddPath(currentContext, mutablePath);
+    
+    //stroke color
+    [[UIColor blueColor] setStroke];
+    
+    //draw the path with the stroke color
+    CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathStroke);
+    
+    //release path
+    CGPathRelease((CGPathRef)mutablePath);
+}
+
+void drawRectangles (void)
+{
+    //create path
+    CGMutablePathRef path   =   NULL;
+    path    =   CGPathCreateMutable();
+    
+    //rectangleToDraw
+    CGRect rectangleToDraw  =   CGRectZero;
+    rectangleToDraw.origin.x    =   10.0f;
+    rectangleToDraw.origin.y    =   10.0f;
+    rectangleToDraw.size.width  =   200.0f;
+    rectangleToDraw.size.height =   300.0f;
+    
+    //add the rect to path
+    CGPathAddRect(path, NULL, rectangleToDraw);
+    
+    //get the handle to the currentContext
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    //Add path to context
+    CGContextAddPath(currentContext, path);
+    
+    //setfillcolor - cornFlowerBlue
+    [[UIColor colorWithRed:0.20f
+                    green:0.60f
+                     blue:0.80f
+                     alpha:1.0f] setFill];
+    
+    //strokeColor - brown
+    [[UIColor brownColor] setStroke];
+    
+    //lineWidth
+    CGContextSetLineWidth(currentContext, 5.0f);
+    
+    //strokeAndFill
+    /*
+     * enum CGPathDrawingMode {
+     kCGPathFill,
+     kCGPathEOFill,
+     kCGPathStroke,
+     kCGPathFillStroke,
+     kCGPathEOFillStroke
+     };
+     */
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathStroke);
+    CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFillStroke);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFillStroke);
+    
+    //release path
+    CGPathRelease((CGPathRef)path);
+    
+    return;
+}
 
 @end
