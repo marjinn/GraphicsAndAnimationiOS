@@ -57,7 +57,7 @@
     
     drawRectangle();
     
-    
+    addManyRecatngles();
     
     
     
@@ -408,6 +408,55 @@ void drawRectangle (void)
     CGPathRelease((CGPathRef)path);
     
     return;
+}
+
+void addManyRecatngles (void)
+{
+    //path
+    CGMutablePathRef path   =   NULL;
+    path    =   CGPathCreateMutable();
+    
+   
+    /* Here are our first rectangle boundaries */
+    CGRect rectangle1 = CGRectMake(10.0f,10.0f, 200.0f, 300.0f);
+    
+    /* And the second rectangle */
+    CGRect rectangle2 = CGRectMake(40.0f,
+                                   100.0f, 90.0f, 300.0f);
+    
+    CGRect rectArray[2] = {rectangle1,rectangle2};
+    
+    //add rectanglesTOpath
+    CGPathAddRects(path, NULL, (const CGRect *)&rectArray, 2);
+    
+    //context
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    //add path to context
+    CGContextAddPath(currentContext, path);
+    
+    
+    /* Set the fill color to cornflower blue */
+    [[UIColor colorWithRed:0.20f
+      
+                     green:0.60f blue:0.80f
+      
+                     alpha:1.0f] setFill];
+    
+    /* Set the stroke color to black */
+    [[UIColor blackColor] setStroke];
+    
+    /* Set the line width (for the stroke) to 5 */
+    CGContextSetLineWidth(currentContext,5.0f);
+    
+    //draw
+    CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFillStroke);
+    
+    //release path
+    CGPathRelease((CGPathRef)path);
+    
+    
 }
 
 @end
