@@ -55,7 +55,7 @@
     
     //pathExample();
     
-    drawRectangles();
+    drawRectangle();
     
     
     
@@ -353,7 +353,7 @@ void pathExample (void)
     CGPathRelease((CGPathRef)mutablePath);
 }
 
-void drawRectangles (void)
+void drawRectangle (void)
 {
     //create path
     CGMutablePathRef path   =   NULL;
