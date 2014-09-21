@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15BDAEEC19CF19BC005FEA42 /* Xcode_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15BDAEEB19CF19BC005FEA42 /* Xcode_icon.png */; };
 		15C1A3D619CCC88000DEF829 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15C1A3D519CCC88000DEF829 /* Foundation.framework */; };
 		15C1A3D819CCC88000DEF829 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15C1A3D719CCC88000DEF829 /* CoreGraphics.framework */; };
 		15C1A3DA19CCC88000DEF829 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15C1A3D919CCC88000DEF829 /* UIKit.framework */; };
@@ -21,6 +22,7 @@
 		15C1A3F719CCC88000DEF829 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15C1A3D919CCC88000DEF829 /* UIKit.framework */; };
 		15C1A3FF19CCC88000DEF829 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 15C1A3FD19CCC88000DEF829 /* InfoPlist.strings */; };
 		15C1A40119CCC88000DEF829 /* GraphicsAndAnimationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 15C1A40019CCC88000DEF829 /* GraphicsAndAnimationTests.m */; };
+		15C1A40C19CCC9EB00DEF829 /* CQMGraphicsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15C1A40B19CCC9EB00DEF829 /* CQMGraphicsView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		15BDAEEB19CF19BC005FEA42 /* Xcode_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Xcode_icon.png; sourceTree = "<group>"; };
 		15C1A3D219CCC88000DEF829 /* GraphicsAndAnimation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GraphicsAndAnimation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15C1A3D519CCC88000DEF829 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		15C1A3D719CCC88000DEF829 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -53,6 +56,8 @@
 		15C1A3FC19CCC88000DEF829 /* GraphicsAndAnimationTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GraphicsAndAnimationTests-Info.plist"; sourceTree = "<group>"; };
 		15C1A3FE19CCC88000DEF829 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		15C1A40019CCC88000DEF829 /* GraphicsAndAnimationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GraphicsAndAnimationTests.m; sourceTree = "<group>"; };
+		15C1A40A19CCC9EB00DEF829 /* CQMGraphicsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CQMGraphicsView.h; sourceTree = "<group>"; };
+		15C1A40B19CCC9EB00DEF829 /* CQMGraphicsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CQMGraphicsView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +124,8 @@
 				15C1A3EB19CCC88000DEF829 /* CQMViewController.m */,
 				15C1A3ED19CCC88000DEF829 /* Images.xcassets */,
 				15C1A3DC19CCC88000DEF829 /* Supporting Files */,
+				15C1A40A19CCC9EB00DEF829 /* CQMGraphicsView.h */,
+				15C1A40B19CCC9EB00DEF829 /* CQMGraphicsView.m */,
 			);
 			path = GraphicsAndAnimation;
 			sourceTree = "<group>";
@@ -126,6 +133,7 @@
 		15C1A3DC19CCC88000DEF829 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				15BDAEEB19CF19BC005FEA42 /* Xcode_icon.png */,
 				15C1A3DD19CCC88000DEF829 /* GraphicsAndAnimation-Info.plist */,
 				15C1A3DE19CCC88000DEF829 /* InfoPlist.strings */,
 				15C1A3E119CCC88000DEF829 /* main.m */,
@@ -229,6 +237,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15BDAEEC19CF19BC005FEA42 /* Xcode_icon.png in Resources */,
 				15C1A3EE19CCC88000DEF829 /* Images.xcassets in Resources */,
 				15C1A3E019CCC88000DEF829 /* InfoPlist.strings in Resources */,
 				15C1A3E919CCC88000DEF829 /* Main.storyboard in Resources */,
@@ -251,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				15C1A3E619CCC88000DEF829 /* CQMAppDelegate.m in Sources */,
+				15C1A40C19CCC9EB00DEF829 /* CQMGraphicsView.m in Sources */,
 				15C1A3EC19CCC88000DEF829 /* CQMViewController.m in Sources */,
 				15C1A3E219CCC88000DEF829 /* main.m in Sources */,
 			);
@@ -457,6 +467,7 @@
 				15C1A40619CCC88000DEF829 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		15C1A40719CCC88000DEF829 /* Build configuration list for PBXNativeTarget "GraphicsAndAnimationTests" */ = {
 			isa = XCConfigurationList;
@@ -465,6 +476,7 @@
 				15C1A40919CCC88000DEF829 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
