@@ -55,10 +55,15 @@
     
     //pathExample();
     
-    drawRectangle();
+    //drawRectangle();
     
-    addManyRecatngles();
+    //addManyRecatngles();
     
+//    addShadowsAtTop();
+//    addShadowsAtBottom();
+    
+    addShadowsAtTopWithContextPushPop();
+    addShadowsAtBottom();
     
     
 }
@@ -456,6 +461,249 @@ void addManyRecatngles (void)
     //release path
     CGPathRelease((CGPathRef)path);
     
+    
+}
+
+
+void addShadowsAtTop (void)
+{
+   
+    /*
+     * Procedure - draw rect with paths
+     * ---------
+     * 1. get Mutable Path
+     * 2. get the rectangle to draw
+     * 3. add the rect to the Path
+     * 4. get current Context
+     * 5. add Path to the current Context
+     * 6. set fill / stroke color
+     * 7. contextDraw Path
+     * 8. path release
+     */
+    
+    /*
+     * Procedure - draw line  with context
+     * ---------
+     * 1. get current Context
+     * 2. set line Width and line join style
+     * 3. Move to point - beginning point of the line
+     * 4. add line to point - end point
+     * 5. set fill / stroke color
+     * 6. context Stroke Path
+     * 7. path release
+     */
+
+
+     //draw rect with shadow
+    
+    //get path
+    CGMutablePathRef mutablePath    =    NULL;
+    mutablePath =    CGPathCreateMutable();
+    
+    //get rect
+    CGRect  rectToDraw  =   CGRectZero;
+    rectToDraw.origin.x =   55.0f;
+    rectToDraw.origin.y =   60.0f;
+    rectToDraw.size.width   =   150.0f;
+    rectToDraw.size.height  =   150.0f;
+    
+    //add rect to path
+    CGPathAddRect(mutablePath, NULL, rectToDraw);
+    
+    //get current Context
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    //add path to current contex
+    CGContextAddPath(currentContext, mutablePath);
+    
+    //fillColor
+    [[UIColor colorWithRed:0.20f
+                     green:0.60f blue:0.80f
+                     alpha:1.0f] setFill];
+    
+    //shadow
+    CGSize shadowOffset =   CGSizeZero;
+    shadowOffset.width  =   10.0f;
+    shadowOffset.height =   10.0f;
+   
+    static  CGFloat const shadowBlur  =   10.0f;
+    
+    CGColorRef shadowColor  =   NULL;
+    shadowColor =   [[UIColor grayColor] CGColor];
+    
+    CGContextSetShadowWithColor
+    (currentContext, shadowOffset, shadowBlur, shadowColor);
+    
+    //context draw  path
+    CGContextDrawPath(currentContext, (CGPathDrawingMode)kCGPathFill);
+    
+    //release
+    CGPathRelease(mutablePath);
+    
+}
+
+void addShadowsAtBottom (void)
+{
+    
+    /*
+     * Procedure - draw rect with paths
+     * ---------
+     * 1. get Mutable Path
+     * 2. get the rectangle to draw
+     * 3. add the rect to the Path
+     * 4. get current Context
+     * 5. add Path to the current Context
+     * 6. set fill / stroke color
+     * 7. contextDraw Path
+     * 8. path release
+     */
+    
+    /*
+     * Procedure - draw line  with context
+     * ---------
+     * 1. get current Context
+     * 2. set line Width and line join style
+     * 3. Move to point - beginning point of the line
+     * 4. add line to point - end point
+     * 5. set fill / stroke color
+     * 6. context Stroke Path
+     * 7. path release
+     */
+    
+    
+    //draw rect with shadow
+    
+    //get path
+    CGMutablePathRef mutablePath    =    NULL;
+    mutablePath =    CGPathCreateMutable();
+    
+    //get rect
+    CGRect  rectToDraw  =   CGRectZero;
+    rectToDraw.origin.x =   150.0f;
+    rectToDraw.origin.y =   250.0f;
+    rectToDraw.size.width   =   100.0f;
+    rectToDraw.size.height  =   100.0f;
+    
+    //add rect to path
+    CGPathAddRect(mutablePath, NULL, rectToDraw);
+    
+    //get current Context
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    //add path to current contex
+    CGContextAddPath(currentContext, mutablePath);
+    
+    //fillColor
+    [[UIColor purpleColor] setFill];
+    
+    //Context reatains shadow from previous
+    
+//    //shadow
+//    CGSize shadowOffset =   CGSizeZero;
+//    shadowOffset.width  =   10.0f;
+//    shadowOffset.height =   10.0f;
+//    
+//    static  CGFloat const shadowBlur  =   10.0f;
+//    
+//    CGColorRef shadowColor  =   NULL;
+//    shadowColor =   [[UIColor grayColor] CGColor];
+//    
+//    CGContextSetShadowWithColor
+//    (currentContext, shadowOffset, shadowBlur, shadowColor);
+    
+    //context draw  path
+    CGContextDrawPath(currentContext, (CGPathDrawingMode)kCGPathFill);
+    
+    //release
+    CGPathRelease(mutablePath);
+    
+}
+
+void addShadowsAtTopWithContextPushPop (void)
+{
+    
+    /*
+     * Procedure - draw rect with paths
+     * ---------
+     * 1. get Mutable Path
+     * 2. get the rectangle to draw
+     * 3. add the rect to the Path
+     * 4. get current Context
+     * 5. save the existing State - before modification
+     * 6. add Path to the current Context
+     * 7. set fill / stroke color
+     * 8. contextDraw Path
+     * 9. path release
+     * 10. restore context to what it was before
+     */
+    
+    /*
+     * Procedure - draw line  with context
+     * ---------
+     * 1. get current Context
+     * 2. set line Width and line join style
+     * 3. Move to point - beginning point of the line
+     * 4. add line to point - end point
+     * 5. set fill / stroke color
+     * 6. context Stroke Path
+     * 7. path release
+     */
+    
+    
+    //draw rect with shadow
+    
+    //get path
+    CGMutablePathRef mutablePath    =    NULL;
+    mutablePath =    CGPathCreateMutable();
+    
+    //get rect
+    CGRect  rectToDraw  =   CGRectZero;
+    rectToDraw.origin.x =   55.0f;
+    rectToDraw.origin.y =   60.0f;
+    rectToDraw.size.width   =   150.0f;
+    rectToDraw.size.height  =   150.0f;
+    
+    //add rect to path
+    CGPathAddRect(mutablePath, NULL, rectToDraw);
+    
+    //get current Context
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    //save the existing State - before modification
+    CGContextSaveGState(currentContext);
+    
+    //add path to current contex
+    CGContextAddPath(currentContext, mutablePath);
+    
+    //fillColor
+    [[UIColor colorWithRed:0.20f
+                     green:0.60f blue:0.80f
+                     alpha:1.0f] setFill];
+    
+    //shadow
+    CGSize shadowOffset =   CGSizeZero;
+    shadowOffset.width  =   10.0f;
+    shadowOffset.height =   10.0f;
+    
+    static  CGFloat const shadowBlur  =   10.0f;
+    
+    CGColorRef shadowColor  =   NULL;
+    shadowColor =   [[UIColor grayColor] CGColor];
+    
+    CGContextSetShadowWithColor
+    (currentContext, shadowOffset, shadowBlur, shadowColor);
+    
+    //context draw  path
+    CGContextDrawPath(currentContext, (CGPathDrawingMode)kCGPathFill);
+    
+    //release
+    CGPathRelease(mutablePath);
+    
+    //restore context to what it was before
+    CGContextRestoreGState(currentContext);
     
 }
 
