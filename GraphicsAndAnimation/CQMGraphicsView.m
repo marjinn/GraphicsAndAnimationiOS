@@ -62,8 +62,10 @@
 //    addShadowsAtTop();
 //    addShadowsAtBottom();
     
-    addShadowsAtTopWithContextPushPop();
-    addShadowsAtBottom();
+    //addShadowsAtTopWithContextPushPop();
+    //addShadowsAtBottom();
+    
+    drawGradient();
     
     
 }
@@ -705,6 +707,96 @@ void addShadowsAtTopWithContextPushPop (void)
     //restore context to what it was before
     CGContextRestoreGState(currentContext);
     
+}
+
+
+static void drawGradient (void)
+{
+    //get colorspace
+    CGColorSpaceRef colorSpace  =   NULL;
+    colorSpace  =   CGColorSpaceCreateDeviceRGB();
+    
+    //startColor
+    UIColor* startColor =   nil;
+    startColor  =   [UIColor blueColor];
+    
+    //startColorComponents
+    CGFloat* startColorComponents   =   NULL;
+    startColorComponents    =
+    (CGFloat*)CGColorGetComponents([startColor CGColor]);
+    
+    //endColor
+    UIColor* endColor   =   nil;
+    endColor    =   [UIColor greenColor];
+    
+    //endColorComponents
+    CGFloat* endColorComponents   =   NULL;
+    endColorComponents    =
+    (CGFloat*)CGColorGetComponents([endColor CGColor]);
+    
+    CGFloat colorComponents[8];
+    
+    //four components of the blue color RGBA
+    //first color = blue
+    colorComponents[0]  =   startColorComponents[0];
+    colorComponents[1]  =   startColorComponents[1];
+    colorComponents[2]  =   startColorComponents[2];
+    colorComponents[3]  =   startColorComponents[3];
+    
+    //four components of the green color (RGBA)
+    colorComponents[4]  =   endColorComponents[0];
+    colorComponents[5]  =   endColorComponents[1];
+    colorComponents[6]  =   endColorComponents[2];
+    colorComponents[7]  =   endColorComponents[3];
+
+    //color indices
+    //2 colors 2 indices
+    //Because we have only two colors in this array,
+    //we need to specify that the first is positioned
+    //at the very beginning of the gradient (position 0.0)
+    //and the second at the very end (position 1.0). So let’s place these
+    //indices in an array to pass to the
+    //CGGradientCreateWithColorComponents function:
+    
+    CGFloat colorIndices[2];
+    colorIndices[0] =   0.0f; /* Color 0 in the colorComponnets array */
+    colorIndices[1] =   1.0f; /* Color 1 in the colorComponnets array */
+    
+    //create gradient
+    CGGradientRef gradient  =   NULL;
+    gradient    =
+    CGGradientCreateWithColorComponents
+    (colorSpace,
+     (const CGFloat *)&colorComponents,
+     (const CGFloat *)&colorIndices,
+     sizeof(colorIndices)
+     );
+    
+    //release
+    CGColorSpaceRelease(colorSpace);
+    
+    //Drawing Axial Gradient
+    //get screen bounds
+    CGRect screenBounds     =   CGRectZero;
+    screenBounds    =   getBoundsWithOrientation(true);
+    
+    CGPoint startPoint  =   CGPointZero;
+    startPoint.x    =   0.0f;
+    startPoint.y    =   CGRectGetMaxY(screenBounds) / 2.0f;
+    
+    CGPoint endPoint    =   CGPointZero;
+    endPoint.x  =   CGRectGetMaxX(screenBounds);
+    endPoint.y  =   startPoint.y;
+    
+    CGContextDrawLinearGradient
+    (UIGraphicsGetCurrentContext(),
+     gradient,
+     startPoint,
+     endPoint,
+     0);
+    
+    //release
+    CGGradientRelease(gradient);
 }
 
 @end
