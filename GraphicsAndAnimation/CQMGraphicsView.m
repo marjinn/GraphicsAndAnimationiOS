@@ -65,7 +65,9 @@
     //addShadowsAtTopWithContextPushPop();
     //addShadowsAtBottom();
     
-    drawGradient();
+    //drawGradientEx1();
+    
+    drawGradientEx2();
     
     
 }
@@ -710,7 +712,7 @@ void addShadowsAtTopWithContextPushPop (void)
 }
 
 
-static void drawGradient (void)
+static void drawGradientEx1 (void)
 {
     //get colorspace
     CGColorSpaceRef colorSpace  =   NULL;
@@ -769,7 +771,7 @@ static void drawGradient (void)
     (colorSpace,
      (const CGFloat *)&colorComponents,
      (const CGFloat *)&colorIndices,
-     sizeof(colorIndices)
+     sizeof(colorIndices) / sizeof(colorIndices[0])
      );
     
     //release
@@ -781,8 +783,10 @@ static void drawGradient (void)
     screenBounds    =   getBoundsWithOrientation(true);
     
     CGPoint startPoint  =   CGPointZero;
-    startPoint.x    =   0.0f;
-    startPoint.y    =   CGRectGetMaxY(screenBounds) / 2.0f;
+    startPoint.x    =   CGRectGetMinX(screenBounds); //0.0f
+    startPoint.y    =   //CGRectGetMaxY(screenBounds) / 2.0f;
+    CGRectGetMidY(screenBounds);
+    
     
     CGPoint endPoint    =   CGPointZero;
     endPoint.x  =   CGRectGetMaxX(screenBounds);
@@ -797,6 +801,142 @@ static void drawGradient (void)
     
     //release
     CGGradientRelease(gradient);
+}
+
+
+static void drawGradientEx2 (void)
+{
+  /*
+   * - Gradient Drawing Procedure
+   * 1. get the context
+   2. save the context
+   3. get the colorspace rgb
+   4. get start color
+   5. split it into components using CGColorGetComponents
+   6. get end color
+   7. split it into components using CGColorGetComponents
+   8. create color components array of size (4* number of colors)
+   9. fill th colorComponnets array with the color componnets from 
+        step 5 and step 7
+   10. Assuming we use 2 colors
+        startColor will produce  a color components array of size 4
+        endColor will produce  a color components array of size 4
+        So colorComponnets array will be of size 8
+        indexes 0-3 will hold color components of start color
+        indexes 4-7 will hold color components of end color
+   11. Prepare the color indices array or locations
+        locations
+        The location for each color provided in components. 
+        Each location must be a CGFloat value in the range of 0 to 1, 
+        inclusive. If 0 and 1 are not in the locations array, Quartz uses the 
+        colors provided that are closest to 0 and 1 for those locations.
+        If locations is NULL, the first color in colors is assigned to location 
+        0, the last color incolors is assigned to location 1, and intervening
+        colors are assigned locations that are at equal intervals in between.
+   12. Create the gradient
+   13. Release the colorspace
+   14. get startPoint and ennPoint
+   15. draw the gradient
+   16. pop the context
+    */
+    
+    //currentContext
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    //save Context
+    CGContextSaveGState(currentContext);
+    
+    //get colorspace
+    CGColorSpaceRef colorSpace  =   NULL;
+    colorSpace  =   CGColorSpaceCreateDeviceRGB();
+    
+    //startColor
+    UIColor* startColor =   nil;
+    startColor  =   [UIColor orangeColor];
+    
+    //startColorComponents
+    CGFloat* startColorComponents   =   NULL;
+    startColorComponents    =
+    (CGFloat*)CGColorGetComponents([startColor CGColor]);
+    
+    //endColor
+    UIColor* endColor   =   nil;
+    endColor    =   [UIColor blueColor];
+    
+    //endColorComponents
+    CGFloat* endColorComponents   =   NULL;
+    endColorComponents    =
+    (CGFloat*)CGColorGetComponents([endColor CGColor]);
+    
+    CGFloat colorComponents[8];
+    
+    //four components of the blue color RGBA
+    //first color = orange
+    colorComponents[0]  =   startColorComponents[0];
+    colorComponents[1]  =   startColorComponents[1];
+    colorComponents[2]  =   startColorComponents[2];
+    colorComponents[3]  =   startColorComponents[3];
+    
+    //four components of the green color (RGBA)
+    //blue
+    colorComponents[4]  =   endColorComponents[0];
+    colorComponents[5]  =   endColorComponents[1];
+    colorComponents[6]  =   endColorComponents[2];
+    colorComponents[7]  =   endColorComponents[3];
+    
+    //color indices
+    //2 colors 2 indices
+    //Because we have only two colors in this array,
+    //we need to specify that the first is positioned
+    //at the very beginning of the gradient (position 0.0)
+    //and the second at the very end (position 1.0). So let’s place these
+    //indices in an array to pass to the
+    //CGGradientCreateWithColorComponents function:
+    
+    CGFloat colorIndices[2];
+    colorIndices[0] =   0.0f; /* Color 0 in the colorComponnets array */
+    colorIndices[1] =   1.0f; /* Color 1 in the colorComponnets array */
+    
+    //create gradient
+    CGGradientRef gradient  =   NULL;
+    gradient    =
+    CGGradientCreateWithColorComponents
+    (colorSpace,
+     (const CGFloat *)&colorComponents,
+     (const CGFloat *)&colorIndices,
+     (sizeof(colorIndices) / sizeof(colorIndices[0]))
+     );
+    
+    //release
+    CGColorSpaceRelease(colorSpace);
+    
+    //Drawing Axial Gradient
+
+    CGPoint startPoint  =   CGPointZero;
+    startPoint.x    =   120.0f;
+    startPoint.y    =   260.0f;
+    
+    CGPoint endPoint    =   CGPointZero;
+    endPoint.x  =   200.0f;
+    endPoint.y  =   220.0f;
+    
+    CGContextDrawLinearGradient
+    (currentContext,
+     gradient,
+     startPoint,
+     endPoint,
+     kCGGradientDrawsBeforeStartLocation |
+     kCGGradientDrawsAfterEndLocation);
+    //to draw before an after the start and end location
+    
+    //release
+    CGGradientRelease(gradient);
+    
+    //restoreContext
+    CGContextRestoreGState(currentContext);
+    
+    
 }
 
 @end
