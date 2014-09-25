@@ -69,7 +69,13 @@
     
     drawGradientEx2();
     
+    //dispacingShapes();
     
+    //dispacingShapesUingCTM();
+    
+    //scalingShapes();
+    
+    //rotatingShapes();
 }
 
 
@@ -712,7 +718,7 @@ void addShadowsAtTopWithContextPushPop (void)
 }
 
 
-static void drawGradientEx1 (void)
+void drawGradientEx1 (void)
 {
     //get colorspace
     CGColorSpaceRef colorSpace  =   NULL;
@@ -804,7 +810,7 @@ static void drawGradientEx1 (void)
 }
 
 
-static void drawGradientEx2 (void)
+void drawGradientEx2 (void)
 {
   /*
    * - Gradient Drawing Procedure
@@ -938,5 +944,275 @@ static void drawGradientEx2 (void)
     
     
 }
+
+
+void dispacingShapes (void)
+{
+    //create path
+    CGMutablePathRef path   =   NULL;
+    path    =   CGPathCreateMutable();
+    
+    //rectangleToDraw
+    CGRect rectangleToDraw  =   CGRectZero;
+    rectangleToDraw.origin.x    =   10.0f;
+    rectangleToDraw.origin.y    =   10.0f;
+    rectangleToDraw.size.width  =   200.0f;
+    rectangleToDraw.size.height =   300.0f;
+    
+    /*
+     * Displace the rectangle to the right by 100 points 
+     * keep y position unchanged
+     */
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    transform   =   CGAffineTransformMakeTranslation(100.0f, 0.0f);
+    
+    //add the rect to path
+    CGPathAddRect(path, (CGAffineTransform *)&transform, rectangleToDraw);
+    
+    //get the handle to the currentContext
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    //Add path to context
+    CGContextAddPath(currentContext, path);
+    
+    //setfillcolor - cornFlowerBlue
+    [[UIColor colorWithRed:0.20f
+                     green:0.60f
+                      blue:0.80f
+                     alpha:1.0f] setFill];
+    
+    //strokeColor - brown
+    [[UIColor brownColor] setStroke];
+    
+    //lineWidth
+    CGContextSetLineWidth(currentContext, 5.0f);
+    
+    //strokeAndFill
+    /*
+     * enum CGPathDrawingMode {
+     kCGPathFill,
+     kCGPathEOFill,
+     kCGPathStroke,
+     kCGPathFillStroke,
+     kCGPathEOFillStroke
+     };
+     */
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathStroke);
+    CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFillStroke);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFillStroke);
+    
+    //release path
+    CGPathRelease((CGPathRef)path);
+
+}
+
+void dispacingShapesUingCTM (void)
+{
+    
+    //create path
+    CGMutablePathRef path   =   NULL;
+    path    =   CGPathCreateMutable();
+    
+    //rectangleToDraw
+    CGRect rectangleToDraw  =   CGRectZero;
+    rectangleToDraw.origin.x    =   10.0f;
+    rectangleToDraw.origin.y    =   10.0f;
+    rectangleToDraw.size.width  =   200.0f;
+    rectangleToDraw.size.height =   300.0f;
+    
+    //add the rect to path
+    CGPathAddRect(path, NULL, rectangleToDraw);
+    
+    //get the handle to the currentContext
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    /* Save the state of the context to revert back to how it was at this state, later */
+    CGContextSaveGState(currentContext);
+    
+    //translate the CTM
+    //CTM - Current transformation Matrix
+    // Matrix that the context uses
+    CGContextTranslateCTM(currentContext, 100.0f, 0.0f);
+    
+    //Add path to context
+    CGContextAddPath(currentContext, path);
+    
+    //setfillcolor - cornFlowerBlue
+    [[UIColor colorWithRed:0.20f
+                     green:0.60f
+                      blue:0.80f
+                     alpha:1.0f] setFill];
+    
+    //strokeColor - brown
+    [[UIColor brownColor] setStroke];
+    
+    //lineWidth
+    CGContextSetLineWidth(currentContext, 5.0f);
+    
+    //strokeAndFill
+    /*
+     * enum CGPathDrawingMode {
+     kCGPathFill,
+     kCGPathEOFill,
+     kCGPathStroke,
+     kCGPathFillStroke,
+     kCGPathEOFillStroke
+     };
+     */
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathStroke);
+    CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFillStroke);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFillStroke);
+    
+    //release path
+    CGPathRelease((CGPathRef)path);
+    
+    /* Restore the state of the context */
+    CGContextRestoreGState(currentContext);
+    
+}
+
+void scalingShapes (void)
+{
+    //create path
+    CGMutablePathRef path   =   NULL;
+    path    =   CGPathCreateMutable();
+    
+    //rectangleToDraw
+    CGRect rectangleToDraw  =   CGRectZero;
+    rectangleToDraw.origin.x    =   10.0f;
+    rectangleToDraw.origin.y    =   10.0f;
+    rectangleToDraw.size.width  =   200.0f;
+    rectangleToDraw.size.height =   300.0f;
+    
+    /*
+     * Scale the rectangle to half its size
+     */
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    transform   =   CGAffineTransformMakeScale(0.5f, 0.5f);
+    
+    //add the rect to path
+    CGPathAddRect(path, (CGAffineTransform *)&transform, rectangleToDraw);
+    
+    //get the handle to the currentContext
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    /* Save the state of the context to revert back to how it was at this state, later */
+    CGContextSaveGState(currentContext);
+    
+    //Add path to context
+    CGContextAddPath(currentContext, path);
+    
+    //setfillcolor - cornFlowerBlue
+    [[UIColor colorWithRed:0.20f
+                     green:0.60f
+                      blue:0.80f
+                     alpha:1.0f] setFill];
+    
+    //strokeColor - brown
+    [[UIColor brownColor] setStroke];
+    
+    //lineWidth
+    CGContextSetLineWidth(currentContext, 5.0f);
+    
+    //strokeAndFill
+    /*
+     * enum CGPathDrawingMode {
+     kCGPathFill,
+     kCGPathEOFill,
+     kCGPathStroke,
+     kCGPathFillStroke,
+     kCGPathEOFillStroke
+     };
+     */
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathStroke);
+    CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFillStroke);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFillStroke);
+    
+    //release path
+    CGPathRelease((CGPathRef)path);
+    
+    /* Restore the state of the context */
+    CGContextRestoreGState(currentContext);
+    
+}
+
+void rotatingShapes (void)
+{
+    //create path
+    CGMutablePathRef path   =   NULL;
+    path    =   CGPathCreateMutable();
+    
+    //rectangleToDraw
+    CGRect rectangleToDraw  =   CGRectZero;
+    rectangleToDraw.origin.x    =   10.0f;
+    rectangleToDraw.origin.y    =   10.0f;
+    rectangleToDraw.size.width  =   200.0f;
+    rectangleToDraw.size.height =   300.0f;
+    
+    /*
+     * rotate the rectangle 45 degree clock wise M_PI_4
+     * takes value sin radians ..hence we have to multiply by pi/180
+     */
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    transform   =   CGAffineTransformMakeRotation( ( (45.0f * M_PI) / 180.0f) );
+    
+    //add the rect to path
+    CGPathAddRect(path, (CGAffineTransform *)&transform, rectangleToDraw);
+    
+    //get the handle to the currentContext
+    CGContextRef currentContext =   NULL;
+    currentContext  =   UIGraphicsGetCurrentContext();
+    
+    /* Save the state of the context to revert back to how it was at this state, later */
+    CGContextSaveGState(currentContext);
+    
+    //Add path to context
+    CGContextAddPath(currentContext, path);
+    
+    //setfillcolor - cornFlowerBlue
+    [[UIColor colorWithRed:0.20f
+                     green:0.60f
+                      blue:0.80f
+                     alpha:1.0f] setFill];
+    
+    //strokeColor - brown
+    [[UIColor brownColor] setStroke];
+    
+    //lineWidth
+    CGContextSetLineWidth(currentContext, 5.0f);
+    
+    //strokeAndFill
+    /*
+     * enum CGPathDrawingMode {
+     kCGPathFill,
+     kCGPathEOFill,
+     kCGPathStroke,
+     kCGPathFillStroke,
+     kCGPathEOFillStroke
+     };
+     */
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFill);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathStroke);
+    CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathFillStroke);
+    //CGContextDrawPath(currentContext, (CGPathDrawingMode) kCGPathEOFillStroke);
+    
+    //release path
+    CGPathRelease((CGPathRef)path);
+    
+    /* Restore the state of the context */
+    CGContextRestoreGState(currentContext);
+    
+}
+
 
 @end
